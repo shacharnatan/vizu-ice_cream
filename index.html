@@ -75,7 +75,7 @@
             overflow: hidden;
             animation: pulse 2s infinite;
             width: 100%;
-            height: 600px; /* גובה קבוע כברירת מחדל */
+            height: 600px;
             position: relative;
         }
 
@@ -119,7 +119,7 @@
         @media (max-width: 768px) {
             nav a { display: block; margin: 0.5rem 0; }
             h1 { font-size: 2rem; }
-            .tableau-embed { height: 400px; } /* התאמה למסכים קטנים */
+            .tableau-embed { height: 400px; }
         }
     </style>
 </head>
@@ -173,31 +173,28 @@
     <script type='text/javascript' src='https://public.tableau.com/javascripts/api/viz_v1.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Tableau Viz
             function initViz() {
                 const containerDiv = document.getElementById("tableauViz");
                 const loadingMessage = document.getElementById("loadingMessage");
+
                 const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream?:embed=yes&:display_count=yes";
 
-
                 const options = {
-                    width: "100%", // התאמה מלאה לרוחב
-                    height: "100%", // התאמה מלאה לגובה המיכל
+                    width: "100%",
+                    height: "100%",
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: () => {
                         console.log("Dashboard loaded successfully!");
-                        loadingMessage.style.display = "none"; // הסתרת הודעת טעינה
+                        loadingMessage.style.display = "none";
                     }
                 };
 
-                // בדיקה אם ה-API של Tableau זמין
                 if (typeof tableau === 'undefined') {
                     loadingMessage.innerHTML = "⚠️ Failed to load Tableau. Check your connection! 🍧";
                     return;
                 }
 
-                // יצירת ה-Viz
                 try {
                     new tableau.Viz(containerDiv, vizUrl, options);
                 } catch (error) {
@@ -206,7 +203,6 @@
                 }
             }
 
-            // וידוא שהסקריפט נטען לפני הפעלת initViz
             const tableauScript = document.querySelector('script[src*="viz_v1.js"]');
             if (tableauScript.complete) {
                 initViz();
@@ -217,7 +213,6 @@
                 };
             }
 
-            // גלילה חלקה לניווט
             document.querySelectorAll('nav a').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -228,7 +223,6 @@
                 });
             });
 
-            // אפקט hover על הסקשנים
             document.querySelectorAll('.section').forEach(section => {
                 section.addEventListener('mouseover', () => {
                     section.style.transform = 'scale(1.02)';
