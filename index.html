@@ -75,7 +75,7 @@
             overflow: hidden;
             animation: pulse 2s infinite;
             width: 100%;
-            height: 600px;
+            height: 700px; /* גובה מותאם לדשבורד */
             position: relative;
         }
 
@@ -91,6 +91,7 @@
             transform: translate(-50%, -50%);
             color: #6e8efb;
             font-size: 1.2rem;
+            text-align: center;
         }
 
         footer {
@@ -119,66 +120,65 @@
         @media (max-width: 768px) {
             nav a { display: block; margin: 0.5rem 0; }
             h1 { font-size: 2rem; }
-            .tableau-embed { height: 400px; }
+            .tableau-embed { height: 500px; }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Ice Cream Analytics 🍦✨</h1>
-        <p>Churn through the data with Tableau! 🍨</p>
+        <p>נתונים מתוקים עם Tableau! 🍨</p>
     </header>
 
     <nav>
-        <a href="#home">Home 🏠</a>
-        <a href="#dashboard">Dashboard 📊</a>
-        <a href="#insights">Insights 💡</a>
-        <a href="#about">About 👋</a>
+        <a href="#home">בית 🏠</a>
+        <a href="#dashboard">דשבורד 📊</a>
+        <a href="#insights">תובנות 💡</a>
+        <a href="#about">אודות 👋</a>
     </nav>
 
     <div class="container">
         <div class="section" id="home">
-            <h2>Welcome to Ice Cream Insights! 🌟</h2>
-            <p>Explore the sweetest data trends with our interactive Tableau dashboard! Get the scoop on ice cream analytics! 🍧</p>
+            <h2>ברוכים הבאים ל-Ice Cream Insights! 🌟</h2>
+            <p>גלו את הטרנדים הכי מתוקים עם הדשבורד האינטראקטיבי שלנו! 🍧</p>
         </div>
 
         <div class="section" id="dashboard">
-            <h2>Ice Cream Dashboard 🍦📈</h2>
-            <p>Dive into our featured Tableau visualization - the coolest way to analyze ice cream data! ❄️</p>
+            <h2>דשבורד גלידות 🍦📈</h2>
+            <p>צללו לתוך ניתוח נתוני הגלידות הכי מגניב! ❄️</p>
             <div class="tableau-embed">
                 <div id="tableauViz"></div>
-                <div id="loadingMessage" class="loading-message">Loading your ice cream data... 🍦⏳</div>
+                <div id="loadingMessage" class="loading-message">טוען את נתוני הגלידות... 🍦⏳<br>אם זה לא נטען, בדוק את החיבור שלך!</div>
             </div>
         </div>
 
         <div class="section" id="insights">
-            <h2>Key Insights 🔍</h2>
+            <h2>תובנות מרכזיות 🔍</h2>
             <ul>
-                <li>🍦 Flavor Trends: What's the hottest scoop?</li>
-                <li>📅 Seasonal Sales: When do we melt the most?</li>
-                <li>🌍 Regional Favorites: Where’s the love for vanilla?</li>
+                <li>🍦 טרנדים בטעמים: מה הכי פופולרי?</li>
+                <li>📅 מכירות עונתיות: מתי הכל נמס?</li>
+                <li>🌍 העדפות אזוריות: איפה אוהבים וניל?</li>
             </ul>
         </div>
 
         <div class="section" id="about">
-            <h2>About Us 🌍</h2>
-            <p>We’re a team of data lovers serving up tasty insights with a cherry on top! Let’s make analytics delicious! 🍒✨</p>
+            <h2>אודותינו 🌍</h2>
+            <p>אנחנו צוות של חובבי נתונים שמגישים תובנות טעימות עם קצת קסם! 🍒✨</p>
         </div>
     </div>
 
     <footer>
-        <p>© 2025 Ice Cream Analytics | Made with ❤️ and 🍦</p>
+        <p>© 2025 Ice Cream Analytics | נוצר עם ❤️ ו🍦</p>
     </footer>
 
     <script type='text/javascript' src='https://public.tableau.com/javascripts/api/viz_v1.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // פונקציה להטמעת הדשבורד
             function initViz() {
                 const containerDiv = document.getElementById("tableauViz");
                 const loadingMessage = document.getElementById("loadingMessage");
-
                 const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream?:embed=y&:toolbar=no&:tabs=no";
-
 
                 const options = {
                     width: "100%",
@@ -186,34 +186,38 @@
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: () => {
-                        console.log("Dashboard loaded successfully!");
+                        console.log("הדשבורד נטען בהצלחה!");
                         loadingMessage.style.display = "none";
                     }
                 };
 
                 if (typeof tableau === 'undefined') {
-                    loadingMessage.innerHTML = "⚠️ Failed to load Tableau. Check your connection! 🍧";
+                    loadingMessage.innerHTML = "⚠️ שגיאה בטעינת Tableau! בדוק את החיבור שלך 🍧";
+                    console.error("Tableau API לא נטען.");
                     return;
                 }
 
                 try {
                     new tableau.Viz(containerDiv, vizUrl, options);
                 } catch (error) {
-                    loadingMessage.innerHTML = "⚠️ Error loading dashboard. Check Tableau settings! 🍦";
-                    console.error("Error:", error);
+                    loadingMessage.innerHTML = "⚠️ שגיאה בהצגת הדשבורד! 🍦";
+                    console.error("שגיאה בהטמעה:", error);
                 }
             }
 
+            // וידוא טעינת הסקריפט
             const tableauScript = document.querySelector('script[src*="viz_v1.js"]');
             if (tableauScript.complete) {
                 initViz();
             } else {
                 tableauScript.onload = initViz;
                 tableauScript.onerror = () => {
-                    document.getElementById("loadingMessage").innerHTML = "⚠️ Tableau script failed! 🍧";
+                    document.getElementById("loadingMessage").innerHTML = "⚠️ לא ניתן לטעון את הסקריפט של Tableau! 🍧";
+                    console.error("שגיאה בטעינת הסקריפט.");
                 };
             }
 
+            // גלילה חלקה לניווט
             document.querySelectorAll('nav a').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -224,6 +228,7 @@
                 });
             });
 
+            // אפקט hover
             document.querySelectorAll('.section').forEach(section => {
                 section.addEventListener('mouseover', () => {
                     section.style.transform = 'scale(1.02)';
