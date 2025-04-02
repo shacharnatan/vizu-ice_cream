@@ -75,7 +75,7 @@
             overflow: hidden;
             animation: pulse 2s infinite;
             width: 100%;
-            height: 700px; /* גובה מותאם לדשבורד */
+            height: 700px;
             position: relative;
         }
 
@@ -171,14 +171,15 @@
         <p>© 2025 Ice Cream Analytics | נוצר עם ❤️ ו🍦</p>
     </footer>
 
-    <script type='text/javascript' src='https://public.tableau.com/javascripts/api/viz_v1.js'></script>
+    <!-- שימוש בסקריפט העדכני של Tableau -->
+    <script type='text/javascript' src='https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // פונקציה להטמעת הדשבורד
             function initViz() {
                 const containerDiv = document.getElementById("tableauViz");
                 const loadingMessage = document.getElementById("loadingMessage");
-                const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream?:embed=y&:toolbar=no&:tabs=no";
+                const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream";
 
                 const options = {
                     width: "100%",
@@ -206,7 +207,7 @@
             }
 
             // וידוא טעינת הסקריפט
-            const tableauScript = document.querySelector('script[src*="viz_v1.js"]');
+            const tableauScript = document.querySelector('script[src*="tableau.embedding.3.latest.min.js"]');
             if (tableauScript.complete) {
                 initViz();
             } else {
