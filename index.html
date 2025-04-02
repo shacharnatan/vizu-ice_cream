@@ -74,7 +74,17 @@
             border-radius: 10px;
             overflow: hidden;
             animation: pulse 2s infinite;
-            min-height: 600px; /* Ensure space for Tableau */
+            min-height: 600px;
+            position: relative;
+        }
+
+        .loading-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #6e8efb;
+            font-size: 1.2rem;
         }
 
         footer {
@@ -131,6 +141,7 @@
             <p>Dive into our featured Tableau visualization - the coolest way to analyze ice cream data! ❄️</p>
             <div class="tableau-embed">
                 <div id="tableauViz"></div>
+                <div id="loadingMessage" class="loading-message">Loading your ice cream data... 🍦⏳</div>
             </div>
         </div>
 
@@ -159,7 +170,9 @@
             // Initialize Tableau Viz
             function initViz() {
                 const containerDiv = document.getElementById("tableauViz");
-                const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream?:language=en-US&:display_count=n&:origin=viz_share_link";
+                const loadingMessage = document.getElementById("loadingMessage");
+                const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream"; // Cleaned URL
+
                 const options = {
                     width: "100%",
                     height: "600px",
@@ -167,18 +180,34 @@
                     hideToolbar: true,
                     onFirstInteractive: () => {
                         console.log("Tableau dashboard loaded successfully! 🍦");
+                        loadingMessage.style.display = "none"; // Hide loading message
+                    },
+                    onFirstVizSizeKnown: () => {
+                        console.log("Tableau size determined!");
                     }
                 };
-                
-                // Check if tableau is defined (GitHub Pages compatibility)
-                if (typeof tableau !== 'undefined') {
+
+                // Check if Tableau script loaded
+                if (typeof tableau === 'undefined') {
+                    loadingMessage.innerHTML = "⚠️ Oops! Tableau script failed to load. Check your connection or try later! 🍧";
+                    console.error("Tableau API not loaded.");
+                    return;
+                }
+
+                try {
                     new tableau.Viz(containerDiv, vizUrl, options);
-                } else {
-                    containerDiv.innerHTML = "<p>⚠️ Oops! Tableau failed to load. Please check your internet connection or try refreshing! 🍧</p>";
+                } catch (error) {
+                    loadingMessage.innerHTML = "⚠️ Error loading dashboard. Is it public? 🍦";
+                    console.error("Tableau Viz Error:", error);
                 }
             }
 
-            initViz();
+            // Call initViz after ensuring script is loaded
+            if (document.querySelector('script[src*="viz_v1.js"]').complete) {
+                initViz();
+            } else {
+                document.querySelector('script[src*="viz_v1.js"]').onload = initViz;
+            }
 
             // Smooth scrolling for nav links
             document.querySelectorAll('nav a').forEach(anchor => {
