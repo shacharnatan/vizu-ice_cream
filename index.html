@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ice Cream Analytics 🍦📊</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            padding: 2rem;
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+        }
+
+        h1 {
+            color: white;
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: #6e8efb;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #a777e3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        h2 {
+            color: #6e8efb;
+            margin-top: 0;
+        }
+
+        .tableau-embed {
+            margin: 2rem 0;
+            border: 3px solid #a777e3;
+            border-radius: 10px;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+            min-height: 600px; /* Ensure space for Tableau */
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            color: white;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(167, 119, 227, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(167, 119, 227, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(167, 119, 227, 0); }
+        }
+
+        @media (max-width: 768px) {
+            nav a { display: block; margin: 0.5rem 0; }
+            h1 { font-size: 2rem; }
+            .tableau-embed { height: 500px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ice Cream Analytics 🍦✨</h1>
+        <p>Churn through the data with Tableau! 🍨</p>
+    </header>
+
+    <nav>
+        <a href="#home">Home 🏠</a>
+        <a href="#dashboard">Dashboard 📊</a>
+        <a href="#insights">Insights 💡</a>
+        <a href="#about">About 👋</a>
+    </nav>
+
+    <div class="container">
+        <div class="section" id="home">
+            <h2>Welcome to Ice Cream Insights! 🌟</h2>
+            <p>Explore the sweetest data trends with our interactive Tableau dashboard! Get the scoop on ice cream analytics! 🍧</p>
+        </div>
+
+        <div class="section" id="dashboard">
+            <h2>Ice Cream Dashboard 🍦📈</h2>
+            <p>Dive into our featured Tableau visualization - the coolest way to analyze ice cream data! ❄️</p>
+            <div class="tableau-embed">
+                <div id="tableauViz"></div>
+            </div>
+        </div>
+
+        <div class="section" id="insights">
+            <h2>Key Insights 🔍</h2>
+            <ul>
+                <li>🍦 Flavor Trends: What's the hottest scoop?</li>
+                <li>📅 Seasonal Sales: When do we melt the most?</li>
+                <li>🌍 Regional Favorites: Where’s the love for vanilla?</li>
+            </ul>
+        </div>
+
+        <div class="section" id="about">
+            <h2>About Us 🌍</h2>
+            <p>We’re a team of data lovers serving up tasty insights with a cherry on top! Let’s make analytics delicious! 🍒✨</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Ice Cream Analytics | Made with ❤️ and 🍦</p>
+    </footer>
+
+    <script type='text/javascript' src='https://public.tableau.com/javascripts/api/viz_v1.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Tableau Viz
+            function initViz() {
+                const containerDiv = document.getElementById("tableauViz");
+                const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream?:language=en-US&:display_count=n&:origin=viz_share_link";
+                const options = {
+                    width: "100%",
+                    height: "600px",
+                    hideTabs: true,
+                    hideToolbar: true,
+                    onFirstInteractive: () => {
+                        console.log("Tableau dashboard loaded successfully! 🍦");
+                    }
+                };
+                
+                // Check if tableau is defined (GitHub Pages compatibility)
+                if (typeof tableau !== 'undefined') {
+                    new tableau.Viz(containerDiv, vizUrl, options);
+                } else {
+                    containerDiv.innerHTML = "<p>⚠️ Oops! Tableau failed to load. Please check your internet connection or try refreshing! 🍧</p>";
+                }
+            }
+
+            initViz();
+
+            // Smooth scrolling for nav links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Hover effect for sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.addEventListener('mouseover', () => {
+                    section.style.transform = 'scale(1.02)';
+                    section.style.transition = 'transform 0.3s';
+                });
+                section.addEventListener('mouseout', () => {
+                    section.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
