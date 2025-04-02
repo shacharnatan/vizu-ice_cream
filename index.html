@@ -75,23 +75,12 @@
             overflow: hidden;
             animation: pulse 2s infinite;
             width: 100%;
-            height: 700px;
-            position: relative;
+            height: 800px; /* גובה מותאם לדשבורד שלך */
         }
 
-        #tableauViz {
+        .tableauPlaceholder {
             width: 100%;
             height: 100%;
-        }
-
-        .loading-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #6e8efb;
-            font-size: 1.2rem;
-            text-align: center;
         }
 
         footer {
@@ -120,7 +109,7 @@
         @media (max-width: 768px) {
             nav a { display: block; margin: 0.5rem 0; }
             h1 { font-size: 2rem; }
-            .tableau-embed { height: 500px; }
+            .tableau-embed { height: 600px; }
         }
     </style>
 </head>
@@ -147,8 +136,35 @@
             <h2>דשבורד גלידות 🍦📈</h2>
             <p>צללו לתוך ניתוח נתוני הגלידות הכי מגניב! ❄️</p>
             <div class="tableau-embed">
-                <div id="tableauViz"></div>
-                <div id="loadingMessage" class="loading-message">טוען את נתוני הגלידות... 🍦⏳<br>אם זה לא נטען, בדוק את החיבור שלך!</div>
+                <div class='tableauPlaceholder' id='viz169876543210'>
+                    <noscript>
+                        <a href='#'><img alt='Dashboardicecream ' src='https://public.tableau.com/static/images/ic/icecream3/Dashboardicecream/1_rss.png' style='border: none' /></a>
+                    </noscript>
+                    <object class='tableauViz' style='display:none;'>
+                        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                        <param name='embed_code_version' value='3' />
+                        <param name='site_root' value='' />
+                        <param name='name' value='icecream3/Dashboardicecream' />
+                        <param name='tabs' value='no' />
+                        <param name='toolbar' value='no' />
+                        <param name='static_image' value='https://public.tableau.com/static/images/ic/icecream3/Dashboardicecream/1.png' />
+                        <param name='animate_transition' value='yes' />
+                        <param name='display_static_image' value='yes' />
+                        <param name='display_spinner' value='yes' />
+                        <param name='display_overlay' value='yes' />
+                        <param name='display_count' value='no' />
+                        <param name='language' value='en-US' />
+                    </object>
+                </div>
+                <script type='text/javascript'>
+                    var divElement = document.getElementById('viz169876543210');
+                    var vizElement = divElement.getElementsByTagName('object')[0];
+                    vizElement.style.width = '100%';
+                    vizElement.style.height = '100%';
+                    var scriptElement = document.createElement('script');
+                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+                    vizElement.parentNode.insertBefore(scriptElement, vizElement);
+                </script>
             </div>
         </div>
 
@@ -171,73 +187,26 @@
         <p>© 2025 Ice Cream Analytics | נוצר עם ❤️ ו🍦</p>
     </footer>
 
-    <!-- שימוש בסקריפט העדכני של Tableau -->
-    <script type='text/javascript' src='https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script>
+    <!-- גלילה חלקה לניווט -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // פונקציה להטמעת הדשבורד
-            function initViz() {
-                const containerDiv = document.getElementById("tableauViz");
-                const loadingMessage = document.getElementById("loadingMessage");
-                const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream";
-
-                const options = {
-                    width: "100%",
-                    height: "100%",
-                    hideTabs: true,
-                    hideToolbar: true,
-                    onFirstInteractive: () => {
-                        console.log("הדשבורד נטען בהצלחה!");
-                        loadingMessage.style.display = "none";
-                    }
-                };
-
-                if (typeof tableau === 'undefined') {
-                    loadingMessage.innerHTML = "⚠️ שגיאה בטעינת Tableau! בדוק את החיבור שלך 🍧";
-                    console.error("Tableau API לא נטען.");
-                    return;
-                }
-
-                try {
-                    new tableau.Viz(containerDiv, vizUrl, options);
-                } catch (error) {
-                    loadingMessage.innerHTML = "⚠️ שגיאה בהצגת הדשבורד! 🍦";
-                    console.error("שגיאה בהטמעה:", error);
-                }
-            }
-
-            // וידוא טעינת הסקריפט
-            const tableauScript = document.querySelector('script[src*="tableau.embedding.3.latest.min.js"]');
-            if (tableauScript.complete) {
-                initViz();
-            } else {
-                tableauScript.onload = initViz;
-                tableauScript.onerror = () => {
-                    document.getElementById("loadingMessage").innerHTML = "⚠️ לא ניתן לטעון את הסקריפט של Tableau! 🍧";
-                    console.error("שגיאה בטעינת הסקריפט.");
-                };
-            }
-
-            // גלילה חלקה לניווט
-            document.querySelectorAll('nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    document.querySelector(targetId).scrollIntoView({
-                        behavior: 'smooth'
-                    });
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
                 });
             });
+        });
 
-            // אפקט hover
-            document.querySelectorAll('.section').forEach(section => {
-                section.addEventListener('mouseover', () => {
-                    section.style.transform = 'scale(1.02)';
-                    section.style.transition = 'transform 0.3s';
-                });
-                section.addEventListener('mouseout', () => {
-                    section.style.transform = 'scale(1)';
-                });
+        // אפקט hover
+        document.querySelectorAll('.section').forEach(section => {
+            section.addEventListener('mouseover', () => {
+                section.style.transform = 'scale(1.02)';
+                section.style.transition = 'transform 0.3s';
+            });
+            section.addEventListener('mouseout', () => {
+                section.style.transform = 'scale(1)';
             });
         });
     </script>
