@@ -74,8 +74,14 @@
             border-radius: 10px;
             overflow: hidden;
             animation: pulse 2s infinite;
-            min-height: 600px;
+            width: 100%;
+            height: 600px; /* גובה קבוע כברירת מחדל */
             position: relative;
+        }
+
+        #tableauViz {
+            width: 100%;
+            height: 100%;
         }
 
         .loading-message {
@@ -113,7 +119,7 @@
         @media (max-width: 768px) {
             nav a { display: block; margin: 0.5rem 0; }
             h1 { font-size: 2rem; }
-            .tableau-embed { height: 500px; }
+            .tableau-embed { height: 400px; } /* התאמה למסכים קטנים */
         }
     </style>
 </head>
@@ -171,45 +177,46 @@
             function initViz() {
                 const containerDiv = document.getElementById("tableauViz");
                 const loadingMessage = document.getElementById("loadingMessage");
-                const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream"; // Cleaned URL
+                const vizUrl = "https://public.tableau.com/views/icecream3/Dashboardicecream";
 
                 const options = {
-                    width: "100%",
-                    height: "600px",
+                    width: "100%", // התאמה מלאה לרוחב
+                    height: "100%", // התאמה מלאה לגובה המיכל
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: () => {
-                        console.log("Tableau dashboard loaded successfully! 🍦");
-                        loadingMessage.style.display = "none"; // Hide loading message
-                    },
-                    onFirstVizSizeKnown: () => {
-                        console.log("Tableau size determined!");
+                        console.log("Dashboard loaded successfully!");
+                        loadingMessage.style.display = "none"; // הסתרת הודעת טעינה
                     }
                 };
 
-                // Check if Tableau script loaded
+                // בדיקה אם ה-API של Tableau זמין
                 if (typeof tableau === 'undefined') {
-                    loadingMessage.innerHTML = "⚠️ Oops! Tableau script failed to load. Check your connection or try later! 🍧";
-                    console.error("Tableau API not loaded.");
+                    loadingMessage.innerHTML = "⚠️ Failed to load Tableau. Check your connection! 🍧";
                     return;
                 }
 
+                // יצירת ה-Viz
                 try {
                     new tableau.Viz(containerDiv, vizUrl, options);
                 } catch (error) {
-                    loadingMessage.innerHTML = "⚠️ Error loading dashboard. Is it public? 🍦";
-                    console.error("Tableau Viz Error:", error);
+                    loadingMessage.innerHTML = "⚠️ Error loading dashboard. Check Tableau settings! 🍦";
+                    console.error("Error:", error);
                 }
             }
 
-            // Call initViz after ensuring script is loaded
-            if (document.querySelector('script[src*="viz_v1.js"]').complete) {
+            // וידוא שהסקריפט נטען לפני הפעלת initViz
+            const tableauScript = document.querySelector('script[src*="viz_v1.js"]');
+            if (tableauScript.complete) {
                 initViz();
             } else {
-                document.querySelector('script[src*="viz_v1.js"]').onload = initViz;
+                tableauScript.onload = initViz;
+                tableauScript.onerror = () => {
+                    document.getElementById("loadingMessage").innerHTML = "⚠️ Tableau script failed! 🍧";
+                };
             }
 
-            // Smooth scrolling for nav links
+            // גלילה חלקה לניווט
             document.querySelectorAll('nav a').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -220,7 +227,7 @@
                 });
             });
 
-            // Hover effect for sections
+            // אפקט hover על הסקשנים
             document.querySelectorAll('.section').forEach(section => {
                 section.addEventListener('mouseover', () => {
                     section.style.transform = 'scale(1.02)';
